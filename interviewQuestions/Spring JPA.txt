@@ -1,0 +1,91 @@
+What is JPA?
+	- Java Persistence API (JPA) is a specification for managing data persistence in Java applications. 
+	- Provids a high-level abstraction layer over the underlying data storage technology, such as relational databases. 
+	- JPA helps in mapping Java objects to relational database tables and allows developers to perform CRUD 
+		(create, read, update, delete) operations on data. 
+JPA is built on top of the Java Persistence Architecture (JPA), which is a standard for managing persistence in Java 
+applications. JPA provides a set of standard interfaces and annotations that can be used with any JPA-compliant 
+ORM framework.
+
+
+ORM framework --Uses--> JPA(Java persistence API) Interface --extends--> JPA(Java persistence architecture) Implementation  -> Database
+
+JPQL stands for Java Persistence Query Language. It is a platform-independent object-oriented query language 
+that is used to retrieve data from a relational database using Java Persistence API. JPQL is similar to SQL 
+(Structured Query Language) in terms of syntax, but instead of operating on tables and columns, it operates on 
+JPA entities and their corresponding attributes.
+String jpql = "SELECT e FROM Employee e WHERE e.department = :dept";
+
+TypedQuery<Employee> query = entityManager.createQuery(jpql, Employee.class);
+query.setParameter("dept", "IT");
+
+List<Employee> results = query.getResultList();
+
+-------------------------------------------------------
+
+key advantages of using JPA over JDBC:
+
+1. Object-Relational Mapping:
+2. Portability
+3. Increased Productivity
+4. Improved Performance:
+5. Transaction Management:
+6. Object-Oriented Features
+
+-------------------------------------
+JPA Repository extends the functionality of the CRUD (Create, Read, Update, Delete)  Repository by providing additional methods and the 
+ability to define custom queries. However, if you only need basic CRUD functionality, then using CRUD Repository 
+may be sufficient.
+----------------------------
+
+In JPA, a named query is a pre-defined query that is given a name and can be used in multiple places in an application. 
+It is defined in the entity class using the @NamedQuery annotation and can be used to retrieve entities based on specific
+ criteria.
+
+@Entity
+@NamedQuery(
+    name = "Product.findByPriceGreaterThan",
+    query = "SELECT p FROM Product p WHERE p.price > :price"
+)
+public class Product {
+    // ...
+}
+TypedQuery<Product> query = entityManager.createNamedQuery("Product.findByPriceGreaterThan", Product.class);
+query.setParameter("price", 10.0);
+List<Product> products = query.getResultList();
+
+Using named queries in JPA has several benefits, including:
+	1. Reusability: named queries can be defined once and used multiple times throughout the application.
+	2. Performance: named queries are compiled and cached by the JPA provider, which can improve performance for frequently used queries.
+	3. Maintenance: named queries can be easily modified or updated in a central location, rather than scattered throughout the codebase.
+=====================================================
+
+
+How can we create a custom repository in Spring data JPA?
+Answer: To create a custom repository, we have to extend it to any of the following interfaces:
+a) Repository
+b) PagingAndSortingRepository
+	The PagingAndSortingRepository provides methods that are used to retrieve entities using pagination and sorting. 
+	It extends the CrudRepository interface.
+c) CrudRepository
+d) JpaRepository
+e) QueryByExampleRepository
+
+==========================================
+
+What is PlatformTransactionMangaer?
+Answer: PlatformTransactionMangaer is an interface that extends TransactionManager. 
+It is the central interface in Spring's transaction infrastructure.
+
+==============================
+
+ Differentiate between findById() and getOne().
+Answer: The findById() is available in CrudRepository while getOne() is available in JpaRepository. 
+The findById() returns null if record does not exist 
+while the getOne() will throw an exception called EntityNotFoundException. 
+
+
+
+
+
+

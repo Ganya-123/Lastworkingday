@@ -1,0 +1,591 @@
+Java 7:
+
+Executors:
+	SingleThreadExecutor 
+		A thread pool of single thread can be obtained by calling the static newSingleThreadExecutor() 
+		method of the Executors class. It is used to execute tasks sequentially.
+	FixedThreadPool(n)
+		As the name indicates, it is a thread pool of a fixed number of threads. 
+		The tasks submitted to the executor are executed by the n threads and if there is 
+		more task they are stored on a LinkedBlockingQueue. It uses Blocking Queue.
+	CachedThreadPool
+		Creates a thread pool that creates new threads as needed, but will reuse previously constructed 
+		threads when they are available. Calls to execute will reuse previously constructed threads if available.
+		If no existing thread is available, a new thread will be created and added to the pool. 
+		It uses a SynchronousQueue queue.
+	ScheduledExecutor
+		Scheduled executors are based on the interface ScheduledExecutorService which extends the ExecutorService
+		 interface. This executor is used when we have a task that needs to be run at regular intervals or 
+		if we wish to delay a certain task.
+			The tasks can be scheduled using either of the two methods:
+			scheduleAtFixedRate: Executes the task with a fixed interval, irrespective of when the previous task ended.
+			scheduleWithFixedDelay: This will start the delay countdown only after the current task completes.
+			scheduledExecService.scheduleAtFixedRate
+				(Runnable command, long initialDelay, long period, TimeUnit unit)
+	Future Object
+		The result of the task submitted for execution to an executor can be accessed using the 
+		java.util.concurrent.The future object returned by the executor. Future can be thought of as a 
+		promise made to the caller by the executor. The future interface is mainly used to get the results of 
+		Callable results. whenever the task execution is completed, it is set in this Future object by the 
+		executor.
+		Future<String> result = executorService.submit(callableTask);
+	Implementation: Creating and Executing a Simple Executor in which we will create a task and execute it in a fixed pool
+		The Task class implements Callable and is parameterized to String type. 
+			It is also declared to throw Exception.
+		Now in order to execute task in class “Task” we have to instantiate the Task class and 
+			are passing it to the executor for execution.
+		Print and display the result that is returned by the Future object
+
+
+===========================================
+java 8:
+-----------------
+Lambda expressions,
+Method references,
+Functional interfaces,
+Stream API,
+Default methods,
+Base64 Encode Decode,
+Static methods in interface,
+Optional class,
+Collectors class,
+ForEach() method,
+Nashorn JavaScript Engine,
+Parallel Array Sorting,
+Type and Repating Annotations,
+IO Enhancements,
+Concurrency Enhancements,
+JDBC Enhancements etc.
+immutable map
+        ImmutableMap<K, T> immutableMap = ImmutableMap.copyOf(map);
+	ImmutableMap<Integer, String> immutableMap = ImmutableMap.of(1, "Geeks",2, "For",3, "Geeks");
+	Map<Integer, String> map = Map.of(1, "Geeks",2, "For",3, "Geeks");   - FROM JAVA 9
+	Using Builder() from ImmutableMap
+		-ImmutableMap<Integer, String> imap = ImmutableMap.<Integer, String>builder().put(1, "Geeks").build();
+
+What are the intermediate and terminal stream operation in java 8 stream?
+------
+What is the difference between synchronized map and ConcurrentHashMap
+synchronizedMap() 
+	requires each thread to acquire a lock on the entire object for both read/write operations. 
+ConcurrentHashMap 
+	allows threads to acquire locks on separate segments of the collection, and make modifications at the same time.
+----------
+What are types of stream in java 8?
+	Stream<T>: This is the most common type of stream
+	IntStream, LongStream, DoubleStream: These are specialized streams
+		These specialized streams have additional methods optimized for dealing with primitive values, such as sum(), average(), and range().
+	Stream<T[]>: This is a stream of arrays of type T. 
+		You can create a Stream<T[]> by calling the Arrays.stream() method on an array of type T[].
+	Stream.Builder<T>: This is a builder class that can be used to create a Stream<T> by adding elements one at a time. 
+		You can create a Stream.Builder<T> using the Stream.builder() method.
+---------
+Runnable: use to execute the instances of a class over another thread with no arguments and no return value. 
+Callable: use to execute the instances of a class over another thread with no arguments and it either returns a value or throws an exception.
+Comparator: use to sort different objects in a user-defined order - compare
+Comparable: use to sort objects in the natural sort order - compareTo
+---------
+
+What are the various categories of pre-defined function interfaces?
+Function: To transform arguments in returnable value.
+Predicate: To perform a test and return a Boolean value.
+Consumer: Accept arguments but do not return any values.
+Supplier: Do not accept any arguments but return a value. 
+Operator: Perform a reduction type operation that accepts the same input types.
+------------
+
+What is the most common type of Terminal operations?
+	collect() - Collects single result from all elements of the stream sequence.
+	reduce() - Produces a single result from all elements of the stream sequence
+	count() - Returns the number of elements on the stream.
+	min() - Returns the min element from the stream.
+	max() - Returns the max element from the stream.
+Search/Query operations
+	anyMatch() , noneMatch() , allMatch() , ... - Short-circuiting operations.
+	Takes a Predicate as input for the match condition.
+	Stream processing will be stopped, as and when the result can be determined.
+Iterative operations
+	forEach() - Useful to do something with each of the Stream elements. It accepts a consumer.
+	forEachOrdered() - It is helpful to maintain order in parallel streams
+--------
+
+Collections:
+	Data structure holds all the data elements
+	External Iteration
+	Can be processed any number of times
+	Elements are easy to access
+	Is a data store
+Streams:
+	No data is stored. Have the capacity to process an infinite number of elements on demand
+	Internal Iteration
+	Traversed only once
+	No direct way of accessing specific elements
+	Is an API to process the data
+----------
+collection:
+	It is an interface
+	It is used to represent a group of individual objects as a single unit.
+	The Collection is an interface that contains a static method since java8. The Interface can also contain abstract and default methods.
+	eg: List, Set, and Queue 
+Collections:
+	It is a utility class.
+	It defines several utility methods that are used to operate on collection.
+	It contains only static methods
+	eg: sort(), min(), max()
+--------------
+collector:
+	Collectors is one of the utility class in JDK which contains a lot of utility functions. It is mostly used with Stream API as a final step
+	Collectors usually get used inside collect() methods
+	1. Collector<T, ?, List<T>> toList():
+	2. Collector<T, ?, Set<T>> toSet(): 
+	3. Collector<T, ?, C> toCollection(Supplier <C> collectionFactory):
+		with toCollection() we can achieve custom implementation where C is the type of the resulting collection and T is the type of the input elements.
+		Eg: stream().map().collect(Collectors.toCollection(List::new)));
+	4. Collector<T, ?, Map< K, U>> toMap(Function keyMapper, Function valueMapper, binary operator(Optional)):
+		Transforms the elements into a Map whose keys and values are the results of applying the passed mapper functions to the input elements and returns a Collector. 
+		toMap() is used to collect input of elements and convert it into Map instance. toMap() methods ask for following arguments
+		- .stream().filter(city -> city.getTemperature() > 10).collect(Collectors.toMap(City::getName, City::getTemperature));
+		K -Key mapper function
+		U - Value mapper function
+		- .stream() .filter(city -> city.getTemperature() > 10) .collect(Collectors.toMap( City::getName, City::getTemperature, (key, identicalKey) -> key)));
+		Using this binary operator we can remove the duplicates and avoid the illegalArgumentException.
+	5. Collector collectingAndThen(Collector downstream, Function finisher): 
+		This method allows us to perform another operation on the result after collecting the input element of collection.
+		.collect(Collectors.groupingBy( City::getName, Collectors.collectingAndThen( Collectors.counting(),f -> f.intValue()))));
+	6. Collector counting():
+		It counts the number of input elements of type T and returns a Collector. This method is used in a case where we want to group and count the number of times each city is present in the collection of elements
+	7. Collector <T, ?, Map<K, List>> groupingBy(Function classifier):
+		Performs group by operation on input elements of type T. The grouping of elements is done as per the passed classifier function and returns the Collector with result in a Map
+		The return type of above groupingBy() is Map<String, List>.
+	8. Collector <T, ?, Map> groupingBy(Function classifier, Collector downstream):
+	9. Collector groupingBy(Function classifier, Supplier mapFactory, Collector downstream):
+	10. Collector joining(): 
+		Concatenates the input elements into a String and returns a Collector.
+	11. Collector joining(CharSequence delimiter): 
+		Concatenates the input elements, separated by the specified delimiter, and returns a Collector.
+	12. Collector joining(CharSequence delimiter, CharSequence prefix, CharSequence suffix):
+		.collect(Collectors.joining(" ", "Prefix:", ":Suffix")));
+	13. Collector mapping(Function mapper, Collector downstream):
+		Transforms a Collector of the input elements of type U to one the input elements of type T by applying a mapping function to every input element before the transformation
+		.collect(Collectors.groupingBy( City::getName, Collectors.mapping( City::getTemperature, Collectors.toList()))));
+	14. Collector<T, ?, Map<Boolean, List>> partitioningBy(Predicate predicate):
+		Partitions the input elements as per the passed Predicate, and transforms them into a Map and returns the Collector.
+		.stream() .collect(Collectors.partitioningBy( city -> city.getTemperature() > 15)));
+		output:  {false=[Mexico–> 14.0, New York–> 13.0, London–> 15.0, Alaska–> 1.0, Sydney–> 11.0, Mexico–> 14.0], true=[New Delhi–> 33.5, Dubai–> 43.0, Kolkata–> 30.0, Dubai–> 43.0]}
+	16. Collector averagingDouble(ToDoubleFunction mapper): Performs the average of the input elements of type Double, and returns the Collector as a result.
+	17. Collector averagingInt(ToIntFunction mapper): Performs the average of the input elements of type Int, and returns the Collector as a result.
+	18. Collector averagingLong(ToLongFunction mapper): Performs the average of the input elements of type Long, and returns the Collector as a result.
+	19. Collector<T, ?, ConcurrentMap<K, List>> groupingByConcurrent(Function classifier):
+		Performs group by operation on the input elements of type T, the grouping of elements is done as per the passed classifier function and returns concurrent Collector
+	20. Collector<T, ?, ConcurrentMap> groupingByConcurrent(Function classifier, Collector downstream):
+	22. Collector reducing(BinaryOperator op): Performs a reduction of its input elements as per passed BinaryOperator and returns a Collector.
+	23. Collector reducing(T identity, BinaryOperator op): Performs a reduction of its input elements as per passed BinaryOperator and as per the passed identity and returns Collector.
+	24. Collector<T, ?, Optional> maxBy(Comparator comparator): Produces the maximal element as per given Comparator, returns an Optional Collector.
+	25. Collector<T, ?, Optional> minBy(Comparator comparator): Produces the minimal element as per given Comparator, returns an Optional Collector.
+	26. Collector<T, ?, ConcurrentMap> toConcurrentMap(Function keyMapper, Function valueMapper):
+-----------------------------------
+
+spring boot:
+------------
+
+The @SpringBootApplication annotation combines three annotations. Those three annotations are: @Configuration, @EnableAutoConfiguration, and @ComponentScan.
+How to disable a specific auto-configuration class?
+	@EnableAutoConfiguration(exclude = {//classname})
+
+
+-------------------
+Dependency Injection (DI) is a design pattern that enables us to produce loosely coupled components. In DI, an object’s ability to complete a task depends on another object. There three types of dependency Injections.
+
+Constructor injection: This is the most common type of DI in Spring Boot. In constructor injection, the dependency object is injected into the dependent object’s constructor.
+Setter injection: In setter injection, the dependency object is injected into the dependent object’s setter method.
+Field injection: In field injection, the dependency object is injected into the dependent object’s field.
+-------------------
+
+An IoC (Inversion of Control) Container in Spring Boot is essentially a central manager for the application objects that
+ controls the creation, configuration, and management of dependency injection of objects (often referred to as beans), 
+also referred to as a DI (Dependency Injection) container.
+--------------
+
+
+The most common Spring Boot interview questions are:
+
+What is Spring Boot?
+What are the advantages of using Spring Boot?
+What are the features of Spring Boot?
+How to create a Spring Boot application?
+What is the difference between Spring Boot and Spring Framework?
+What are the starter dependencies in Spring Boot?
+What is the purpose of the @SpringBootApplication annotation?
+What is the purpose of the @Configuration annotation?
+What is the purpose of the @Bean annotation?
+What is the purpose of the @Autowired annotation?
+What is the purpose of the @Value annotation?
+What is the purpose of the @Profile annotation?
+What is the purpose of the @EnableAutoConfiguration annotation?
+What is the default port of the embedded server in Spring Boot? tomcat, jetty, undertow, 
+How to change the port of the embedded Tomcat server in Spring Boot?
+How to enable actuator in Spring Boot?
+How to access actuator endpoints in Spring Boot?
+@sprintboottest vs @contextConfiguration vs @import
+@configuration vs @component
+@DynamicPropertySource
+
+@ConditionalOnMissingBean annotation - To instruct an auto-configuration class to back off when a bean already exists.
+	The most noticeable attributes of this annotation are:
+		value – the types of beans to be checked
+		name – the names of beans to be checked
+	@Configuration
+	public class CustomConfiguration {
+    		@Bean
+    		@ConditionalOnMissingBean
+    		public CustomService service() { ... }
+	}
+
+------------------------
+
+
+
+
+Programming questions:
+
+Find even numbers from ArrayList and find the sum of all numbers using Java 8 stream API?
+List<Integer> numbers = Arrays.asList(1,2,3,4,5,6); // Your list of numbers
+
+int sumOfEvenNumbers = numbers.stream()
+    .filter(n -> n % 2 == 0)
+    .mapToInt(Integer::intValue)
+    .sum();
+---------
+
+public class DuplicateElements {
+  public static void main(String args[]) {
+          List<Integer> myList = Arrays.asList(10,15,8,49,25,98,98,32,15);
+          Set<Integer> set = new HashSet();
+          myList.stream()
+                .filter(n -> !set.add(n))
+                .forEach(System.out::println);
+  }
+}
+----------------------------
+public class FindMaxElement{
+  public static void main(String args[]) {
+          List<Integer> myList = Arrays.asList(10,15,8,49,25,98,98,32,15);
+          int max =  myList.stream()
+                           .max(Integer::compare)
+                           .get();
+          System.out.println(max);                    
+  }
+}
+------------------
+public class FirstNonRepeated{
+  public static void main(String args[]) {
+    String input = "Java articles are Awesome";
+    
+    Character result = input.chars() // Stream of String       
+            .mapToObj(s -> Character.toLowerCase(Character.valueOf((char) s))) // First convert to Character object and then to lowercase         
+            .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())) //Store the chars in map with count 
+            .entrySet()
+            .stream()
+            .filter(entry -> entry.getValue() == 1L)
+            .map(entry -> entry.getKey())
+            .findFirst()
+            .get();
+    System.out.println(result);                    
+    }
+}
+----------------
+
+Merge two Employee ArrayList and sort by age in using java8 stream API?
+List<Employee> list1 = ...; // Your first list
+List<Employee> list2 = ...; // Your second list
+
+List<Employee> mergedAndSorted = Stream.concat(list1.stream(), list2.stream())
+    .sorted(Comparator.comparingInt(Employee::getAge))
+    .collect(Collectors.toList());
+--------
+How to find employees name starting with alphabet A using stream API?
+List<Employee> employees = ...; // Your list of employees
+
+List<Employee> employeesStartingWithA = employees.stream()
+    .filter(e -> e.getName().startsWith("A"))
+    .collect(Collectors.toList());
+-----------
+Sort employee byname and salary using java 8 stream API?
+public class Employee {
+    String firstName;
+    int age;
+}
+
+        List<Employee> employees = new ArrayList<>();
+        Employee e1 = new Employee("Ajay",35);
+        Employee e2 = new Employee("Vijay",5);
+        Employee e3 = new Employee("Zack",30);
+        Employee e4 = new Employee("David",51);
+
+
+List<Employee> sortedEmployees = employees.stream()
+    .sorted(Comparator.comparing(Employee::getName).thenComparing(Employee::getSalary))
+    .collect(Collectors.toList());
+--------------------
+
+Sort Employee based on gender and age is above 30 using Java 8 stream API?
+List<Employee> employees = ...; // Your list of employees
+
+List<Employee> sortedEmployees = employees.stream()
+    .filter(e -> e.getAge() > 30)
+    .sorted(Comparator.comparing(Employee::getGender))
+    .collect(Collectors.toList());
+----------
+
+
+
+
+
+Microservices:
+
+1. Decomposition Patterns
+	a. Decompose by Business Capability
+	b. Decompose by Subdomain
+	c. Strangler Pattern
+2. Integration Patterns
+	a. API Gateway Pattern
+	b. Aggregator Pattern
+	c. Client-Side UI Composition Pattern
+3. Database Patterns
+	a. Database per Service
+	b. Shared Database per Service
+	c. Command Query Responsibility Segregation (CQRS)
+	d. Saga Pattern
+4. Observability Patterns
+	a. Log Aggregation
+	b. Performance Metrics
+	c. Distributed Tracing
+	d. Health Check
+5. Cross-Cutting Concern Patterns
+	a. External Configuration
+	b. Service Discovery Pattern
+	c. Circuit Breaker Pattern
+	d. Blue-Green Deployment Pattern
+
+Sidecar, Chained Microservice, Branch Microservice, Event Sourcing Pattern, Continuous Delivery Patterns
+
+
+Saga pattern:
+	A Saga represents a high-level business process that consists of several sub requests, 
+	which each update data within a single service. Each request has a compensating request that is executed when 
+	the request fails.  It can be implemented in two ways:
+	Choreography — When there is no central coordination, each service produces and listens to another service’s events and decides if an action should be taken or not.
+	Orchestration — An orchestrator (object) takes responsibility for a saga’s decision making and sequencing business logic.
+
+CQRS suggests splitting the application into two parts — the command side and the query side. 
+The command side handles the Create, Update, and Delete requests. 
+The query side handles the query part by using the materialized views. 
+The event sourcing pattern is generally used along with it to create events for any data change. 
+Materialized views are kept updated by subscribing to the stream of events.
+
+--------------
+Comparable vs comparator:
+-----------
+
+Comparable is meant for objects with natural ordering
+	- which means the object itself must know how it is to be ordered. 
+		For example Roll Numbers of students. 
+	- Logically, Comparable interface compares “this” reference with the object specified 
+	- If any class implements Comparable interface in Java then collection of that object either List or Array can be 
+	sorted automatically by using Collections.sort() or Arrays.sort() method and objects will be sorted based on there 
+	natural order defined by CompareTo method.
+	- A basic differentiating feature is that using comparable we can use only one comparison.
+
+Comparator in Java compares two different class objects provided.
+	- Whereas, Comparator interface sorting is done through a separate class.
+	- Whereas, we can write more than one custom comparators as you want for a given type, 
+	all using different interpretations of what sorting means. 
+	Like in the comparable example we could just sort by only one attribute, 
+	i.e., year but in the comparator, we were able to use different attributes like rating, name, and year as well.
+----------------------
+
+Feign client:
+1. <artifactId>spring-cloud-starter-openfeign</artifactId>
+
+2. we need to add @EnableFeignClients to our main class:
+@FeignClient(value = "jplaceholder", url = "https://jsonplaceholder.typicode.com/")
+public interface JSONPlaceHolderClient {
+
+    @RequestMapping(method = RequestMethod.GET, value = "/posts")
+    List<Post> getPosts();
+
+    @RequestMapping(method = RequestMethod.GET, value = "/posts/{postId}", produces = "application/json")
+    Post getPostById(@PathVariable("postId") Long postId);
+}
+3. Configuration
+Now, it’s very important to understand that each Feign client is composed of a set of customizable components.
+The above class contains these beans:
+
+Decoder – ResponseEntityDecoder, which wraps SpringDecoder, used to decode the Response
+Encoder – SpringEncoder is used to encode the RequestBody.
+Logger – Slf4jLogger is the default logger used by Feign.
+Contract – SpringMvcContract, which provides annotation processing
+Feign-Builder – HystrixFeign.Builder is used to construct the components.
+Client – LoadBalancerFeignClient or default Feign client
+
+
+4.Custom Beans Configuration
+If we want to customize one or more of these beans, we can override them by creating a Configuration class, 
+which we then add to the FeignClient annotation:
+@FeignClient(value = "jplaceholder",
+  url = "https://jsonplaceholder.typicode.com/",
+  configuration = ClientConfiguration.class)
+public class ClientConfiguration {
+
+    @Bean
+    public OkHttpClient client() {
+        return new OkHttpClient();
+    }
+}
+
+4.2. Configuration Using Properties
+	Rather than use a Configuration class, we can use application properties to configure Feign clients, 
+	as shown in this application.yaml example:
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+If we have both Configuration bean and configuration properties, configuration properties will override Configuration bean values.
+
+5. Interceptors
+Adding interceptors is another useful feature provided by Feign.
+5. 1 Let’s implement our custom request interceptor:
+The interceptors can perform a variety of implicit tasks, from authentication to logging, for every HTTP request/response.
+5.2. Using BasicAuthRequestInterceptor class that the Spring Cloud OpenFeign provides.
+
+6. Hystrix Support:
+we need to enable Hystrix by adding feign.hystrix.enabled=true in the properties file.
+@Component
+public class JSONPlaceHolderFallback implements JSONPlaceHolderClient {
+
+    @Override
+    public List<Post> getPosts() {
+        return Collections.emptyList();
+    }
+}
+@FeignClient(value = "jplaceholder",
+  url = "https://jsonplaceholder.typicode.com/",
+  fallback = JSONPlaceHolderFallback.class)
+public interface JSONPlaceHolderClient {
+    // APIs
+}
+7. Logging:
+To enable logging, we should declare it in the application.properties file using the package name of the client interfaces:
+logging.level.com.baeldung.cloud.openfeign.client: DEBUG
+
+8. Error Handling
+Feign’s default error handler, ErrorDecoder.default, always throws a FeignException.
+public class CustomErrorDecoder implements ErrorDecoder {
+    @Override
+    public Exception decode(String methodKey, Response response) {
+	}
+}
+public class ClientConfiguration {
+
+    @Bean
+    public ErrorDecoder errorDecoder() {
+        return new CustomErrorDecoder();
+    }
+}
+
+9. Retry:
+
+Its most important method, continueOrPropagate, accepts RetryableException as an argument and returns nothing. 
+Upon execution, it either throws an exception or exits successfully (usually after sleeping). 
+If it doesn’t throw an exception, Feign will continue to retry the call. 
+If the exception is thrown, it’ll be propagated and will effectively finish the call with an error.
+
+===========================================================
+
+
+
+Spring cloud:
+
+major difference between Spring Boot and Spring Cloud is that 
+	- Spring Boot is a framework for developing stand-alone, production-grade Spring-based applications, 
+	- Spring Cloud is a framework for building distributed systems and microservices-based applications
+
+
+What are some common Spring cloud annotations?  (answer)
+Answer: here is a list of some of the most essential Spring cloud annotations for Java developers
+@EnableConfigServer 
+@EunableEurekaServer
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+@HystricCommand
+
+
+How load balancing is implemented in the Spring cloud?
+
+Netfliz Ribbon:
+==============
+Answer: you can implement load balancing in the Spring cloud using Netflix Ribbon, 
+which is responsible for distributing the incoming request among the available instances of MIcroservices.
+
+Ribbon uses a round-robin algorithm by default to distribute the requests, 
+but it also supports other load balancing algorithms, such as random and weighted load balancing. 
+Ribbon is integrated with Spring Cloud's service registry, which means that it automatically discovers the 
+available instances of a service and maintains a dynamic list of them.
+
+
+ZUUL:
+-======
+In addition to Ribbon, Spring Cloud also supports server-side load balancing using a component called "Zuul."
+ Zuul acts as a gateway for incoming requests and routes them to the appropriate instance of a service based on 
+various criteria, such as the request path and headers.
+
+What are the different kinds of filters provided by Zuul?
+Zuul provides the following filter types that correspond to the lifecycle of a request.
+1. PRE Filters - Filters that execute before routing to the origin server.
+2.ROUTING Filters - Filters that handle routing the request to an origin. Builds HTTP Request and calls the Origin server using Apache HttpClient or Netflix Ribbon.
+3. POST Filters - Filters that execute after the request has been routed to the origin.
+4. ERROR Filters - Filters that execute when an error occurs during any one of the phases.
+
+
+Client-Side Load Balancer Provided by Spring Cloud: Spring Cloud Load Balancer, Netflix Ribbon
+	- application + spring netflix ribbon + eureka naming server and service discovery    ------> request goes to server directly.	
+Server-Side Load Balancer Provided by Spring Cloud: Spring Cloud Gateway, Netflix Zuul
+	- application ------>  loadbalancer (AWS elastic load balancer / Nginix)    ------->  request goes to server.
+
+
+================
+
+What is the use of the Spring cloud bus?
+Answer: The spring cloud bus provides a helpful feature to refresh configurations across several multiple instances.
+
+=====================
+
+service registration and discovery:
+
+
+Answer: Eureka and zookeeper are the two services which can provide service registration and 
+discovery but they are not the only one. In Spring Cloud, the following services can be used for 
+service registration and discovery:
+
+Eureka
+Consul
+ZooKeeper
+etcd
+Cloud Foundry
+Kubernetes
+
+Give the benefits of Eureka and Zookeeper?
+Answer: 
+Eureka guarantees high availability and usability while 
+Zookeeper guarantees consistency and partition fault tolerance. 
+
+===========================
+
+
+static code analysis
+
+-----------------

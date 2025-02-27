@@ -1,0 +1,66 @@
+@RunWith(SpringRunner.class) - Junit 4
+@ExtendWith(SpringExtension.class)
+@SpringBootTest - Junit 5
+@ContextConfiguration
+@enableConfigurationProperties(property.class)
+@TestPropertySource(application-test.properties)
+@DirtiesContext(classMode = aftereach method)
+
+
+
+
+
+
+
+
+
+
+
+Controller vs restcontroller
+responseBody
+GET, POST, 
+idempotent
+patch , put
+@requestmapping
+@modelAttribute
+Record
+DualKeyMap
+treeMap vs hashmap vs concurrent vs synchronized map
+Set vs map
+list
+array
+stack, queue
+component vs service vs repository...
+@ComponentPropertyScan
+@ComponentSCan
+RequiredConstructor vs allConstructor
+How data is transfered and serialized and deserialized in spring boot
+rest vs soap
+path param vs query param
+http status code 
+redis
+avro vs json
+how http changes to https
+why equals and hashcode override together?
+immutable ,  string literal vs object?
+integration testing
+declarative transaction management
+SOlID
+checked vs unchecked exceptions
+error vs exceptions
+exception flow
+custom annotation
+Lock in spring repository
+spring integration
+deadlock
+producer consumer code
+memory management
+garbage management
+dispatcher servltet in spring boot/ mvc
+@Enable * annotations
+Spring's caching framework
+
+
+Namequery - no specific return type
+typedQuery - type safe, has specific return type
+
